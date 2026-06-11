@@ -263,6 +263,16 @@ section{padding:5rem 5vw;position:relative}
 .fin-card{background:#fff;border:1px solid var(--linha);border-radius:var(--raio);padding:1.6rem}
 .fin-card .mono{color:var(--celeste);display:block;margin-bottom:.6rem}
 .fin-card b{font-family:'Fraunces',serif;font-size:1.9rem;color:var(--cobalto-esc);font-weight:450}
+.fin-card input[type=range]{
+  width:100%;margin:.8rem 0 .2rem;appearance:none;height:4px;border-radius:2px;
+  background:linear-gradient(to right,var(--celeste),var(--cobalto));
+}
+.fin-card input[type=range]::-webkit-slider-thumb{
+  appearance:none;width:18px;height:18px;border-radius:50%;background:#fff;border:3px solid var(--cobalto);cursor:grab;
+}
+.fin-card input[type=range]::-moz-range-thumb{
+  width:16px;height:16px;border-radius:50%;background:#fff;border:3px solid var(--cobalto);cursor:grab;
+}
 .fin-card p{font-size:.84rem;color:var(--tinta-dim);margin-top:.5rem}
 .barra{background:#fff;border:1px solid var(--linha);border-radius:var(--raio);padding:2rem}
 .barra h3{color:var(--cobalto-esc);font-size:1.2rem;margin-bottom:1.4rem;font-weight:480}
@@ -448,7 +458,9 @@ footer .brand{font-family:'Fraunces',serif;font-style:italic;color:var(--cobalto
 
   <div class="fin-grid reveal">
     <div class="fin-card"><span class="mono">Poupança atual</span><b>60 000 €</b><p>Ponto de partida, junho de 2026.</p></div>
-    <div class="fin-card"><span class="mono">Capacidade mensal</span><b>2 500–3 000 €</b><p>Com 9 000 € líquidos e 1 500 € de crédito atual, é uma taxa de poupança realista (~30%).</p></div>
+    <div class="fin-card"><span class="mono">Capacidade mensal</span><b id="capOut">2 500 €</b>
+      <input type="range" id="cap" min="1000" max="4000" value="2500" step="100" aria-label="Capacidade de poupança mensal">
+      <p>Ao longo de 15 meses (jun. 2026 → set. 2027). Com 9 000 € líquidos e 1 500 € de crédito atual, ~30% é realista. Arrasta para recalcular a poupança.</p></div>
     <div class="fin-card"><span class="mono">Teto do casamento</span><b id="tetoOut">15 000 €</b><p>Copo de água ~<span id="espacoOut">9 000 €</span> + igreja, foto/vídeo, trajes e flores ~6 000 €. Ajusta o orçamento na secção dos locais para recalcular.</p></div>
     <div class="fin-card"><span class="mono">Disponível em set. 2027</span><b id="dispOut">~79 k€</b><p>Depois de pago o casamento — para entrada e custos da casa. Desce com orçamentos maiores.</p></div>
   </div>
@@ -462,7 +474,7 @@ footer .brand{font-family:'Fraunces',serif;font-style:italic;color:var(--cobalto
     </div>
     <div class="legenda">
       <span><i style="background:var(--cobalto)"></i>Poupança atual · 60 k€</span>
-      <span><i style="background:var(--celeste)"></i>Poupança nova (15 meses) · ~34 k€</span>
+      <span><i style="background:var(--celeste)"></i>Poupança nova (15 meses) · <span id="novaLeg">~38 k€</span></span>
       <span><i style="background:var(--ouro)"></i>Casamento · <span id="casaLeg">15 k€</span></span>
     </div>
   </div>
@@ -536,7 +548,7 @@ const cardsEl = document.getElementById('cards');
    custo estimado (convidados × € por pessoa) para decidir que locais cabem. */
 const EXTRAS = 6000;        /* igreja, foto/vídeo, trajes, flores */
 const POUP_ATUAL = 60000;   /* poupança em junho de 2026 */
-const POUP_NOVA  = 34000;   /* poupança acumulada em 15 meses */
+const MESES = 15;           /* jun. 2026 → set. 2027 */
 
 function fitStatus(tMin, tMax, venueBudget){
   if(tMax <= venueBudget) return {key:'ok', cls:'fit-ok', label:'Dentro do orçamento'};
@@ -577,22 +589,34 @@ const tetoHero = document.getElementById('tetoHero');
 const espacoOut = document.getElementById('espacoOut');
 const dispOut = document.getElementById('dispOut');
 const casaLeg = document.getElementById('casaLeg');
+const novaLeg = document.getElementById('novaLeg');
+const capSlider = document.getElementById('cap');
+const capOut = document.getElementById('capOut');
 const barra = document.querySelector('.barra');
+
+/* poupança nova = capacidade mensal × meses até ao casamento */
+const poupNova = () => (+capSlider.value) * MESES;
 
 function syncBudgetUI(budget){
   budgetOut.textContent = fmt(budget);
   if(tetoOut) tetoOut.textContent = fmt(budget);
   if(tetoHero) tetoHero.textContent = '≤ ' + fmt(budget);
   if(espacoOut) espacoOut.textContent = fmt(Math.max(0, budget - EXTRAS));
+  updateFinances(budget);
+}
+
+function updateFinances(budget){
+  const nova = poupNova();
 
   /* poupança disponível em set. 2027 = poupança total − casamento */
-  const disponivel = POUP_ATUAL + POUP_NOVA - budget;
+  const disponivel = POUP_ATUAL + nova - budget;
   if(dispOut) dispOut.textContent = '~' + Math.round(disponivel/1000) + ' k€';
   if(casaLeg) casaLeg.textContent = Math.round(budget/1000) + ' k€';
+  if(novaLeg) novaLeg.textContent = '~' + Math.round(nova/1000) + ' k€';
 
   /* barra: três fatias de (poupança atual + nova + casamento) */
-  const total = POUP_ATUAL + POUP_NOVA + budget;
-  const widths = {poupanca:POUP_ATUAL/total, acumulado:POUP_NOVA/total, casamento:budget/total};
+  const total = POUP_ATUAL + nova + budget;
+  const widths = {poupanca:POUP_ATUAL/total, acumulado:nova/total, casamento:budget/total};
   if(barra){
     barra.querySelectorAll('.seg').forEach(s=>{
       const w = (widths[[...s.classList].find(c=>c in widths)] * 100).toFixed(1) + '%';
@@ -612,6 +636,10 @@ budgetSlider.addEventListener('input', () => {
   const b = +budgetSlider.value;
   syncBudgetUI(b);
   render(+slider.value, b);
+});
+capSlider.addEventListener('input', () => {
+  capOut.textContent = fmt(+capSlider.value);
+  updateFinances(+budgetSlider.value);
 });
 
 /* filtros */

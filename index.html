@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Murça 2027</title>
+<title>Casamento Pedro e Helena · Murça 2027</title>
 <meta name="description" content="O copo de água a 30 km de Murça: 6 locais e recomendação.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Figtree:wght@300..700&family=Spline+Sans+Mono:wght@300..600&display=swap" rel="stylesheet">
@@ -148,13 +148,14 @@ section{padding:5rem 5vw;position:relative}
 /* calculadora */
 .calc{
   background:var(--painel);border:1px solid var(--linha);border-radius:var(--raio);
-  padding:1.5rem 2rem;display:flex;align-items:center;gap:2rem;flex-wrap:wrap;
+  padding:1.5rem 2rem;display:flex;gap:2.5rem;flex-wrap:wrap;
   margin-bottom:2.4rem;box-shadow:0 14px 36px -26px rgba(29,78,137,.3);
 }
+.calc-field{display:flex;align-items:center;gap:1rem;flex:1;min-width:280px;flex-wrap:wrap}
 .calc label{font-size:.8rem;color:var(--tinta-dim);letter-spacing:.06em;text-transform:uppercase}
-.calc .guests{font-family:'Fraunces',serif;font-size:2.2rem;color:var(--cobalto);min-width:3.2ch;font-weight:500}
+.calc .valor{font-family:'Fraunces',serif;font-size:1.9rem;color:var(--cobalto);font-weight:500;white-space:nowrap}
 .calc input[type=range]{
-  flex:1;min-width:180px;appearance:none;height:4px;border-radius:2px;
+  flex:1;min-width:140px;appearance:none;height:4px;border-radius:2px;
   background:linear-gradient(to right, var(--celeste), var(--cobalto));
 }
 .calc input[type=range]::-webkit-slider-thumb{
@@ -197,6 +198,15 @@ section{padding:5rem 5vw;position:relative}
 .t-med{background:#e6eefb;color:var(--cobalto)}
 .t-alt{background:#fdf2e2;color:#9a6b10}
 .t-pre{background:#10335e;color:#dce9fa}
+.card .fit{
+  align-self:flex-start;display:inline-flex;align-items:center;gap:.45rem;
+  font-size:.74rem;font-weight:600;letter-spacing:.04em;
+  padding:.3rem .85rem;border-radius:99px;
+}
+.card .fit::before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor}
+.fit-ok{background:#e7f3ec;color:#1f7a4d}
+.fit-tight{background:#fdf2e2;color:#9a6b10}
+.fit-over{background:#fbe7e7;color:#b3261e}
 .card h3{font-size:1.42rem;color:var(--cobalto-esc);font-weight:480}
 .card .loc{font-size:.82rem;color:var(--tinta-dim);display:flex;gap:.5rem;align-items:center}
 .card .loc::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--cobalto)}
@@ -291,9 +301,9 @@ footer .brand{font-family:'Fraunces',serif;font-style:italic;color:var(--cobalto
 <!-- ============ PÁGINA DE APRESENTAÇÃO ============ -->
 <header class="capa" id="apresentacao">
   <div class="azulejo-band top" aria-hidden="true"></div>
-  <div class="monograma"><span>P·F</span></div>
+  <div class="monograma"><span>P·H</span></div>
   <span class="eyebrow mono">Murça, Trás-os-Montes</span>
-  <h1>O nosso <em>sim</em>,<br>na terra do vinho e do azeite.</h1>
+  <h1>Casamento<br><em>Pedro e Helena</em></h1>
   <p class="sub">Cerimónia religiosa em Murça e copo de água algures num raio de 30 km — este é o nosso guia de locais, orçamentos e datas para 2027.</p>
   <div class="data-pill">
     <span>Data prevista</span><b>Setembro de 2027</b><span>·</span><span>80-100 convidados</span>
@@ -320,7 +330,7 @@ footer .brand{font-family:'Fraunces',serif;font-style:italic;color:var(--cobalto
     <div class="meta">
       <div><b>100</b><span>convidados</span></div>
       <div><b>6</b><span>locais avaliados</span></div>
-      <div><b>≤ 15 000 €</b><span>teto do casamento</span></div>
+      <div><b id="tetoHero">≤ 15 000 €</b><span>teto do casamento</span></div>
     </div>
   </div>
 
@@ -377,9 +387,16 @@ footer .brand{font-family:'Fraunces',serif;font-style:italic;color:var(--cobalto
   </div>
 
   <div class="calc reveal">
-    <label for="guests">Convidados</label>
-    <span class="guests" id="guestsOut">100</span>
-    <input type="range" id="guests" min="70" max="140" value="100" step="5" aria-label="Número de convidados">
+    <div class="calc-field">
+      <label for="guests">Convidados</label>
+      <span class="valor" id="guestsOut">100</span>
+      <input type="range" id="guests" min="70" max="140" value="100" step="5" aria-label="Número de convidados">
+    </div>
+    <div class="calc-field">
+      <label for="budget">Orçamento total</label>
+      <span class="valor" id="budgetOut">15 000 €</span>
+      <input type="range" id="budget" min="8000" max="25000" value="15000" step="500" aria-label="Orçamento total do casamento">
+    </div>
   </div>
 
   <div class="filtros reveal" role="group" aria-label="Filtrar por orçamento">
@@ -392,7 +409,7 @@ footer .brand{font-family:'Fraunces',serif;font-style:italic;color:var(--cobalto
 
   <div class="grid" id="cards"></div>
 
-  <p class="estim-note reveal">* Estimativas por pessoa baseadas em médias regionais (a média nacional em quintas ronda os 76 €/pessoa; Trás-os-Montes tende a ficar abaixo). Menus incluem habitualmente cocktail, jantar, bebidas e bolo — confirmem o que está incluído em cada orçamento.</p>
+  <p class="estim-note reveal">* Estimativas por pessoa baseadas em médias regionais (a média nacional em quintas ronda os 76 €/pessoa; Trás-os-Montes tende a ficar abaixo). Menus incluem habitualmente cocktail, jantar, bebidas e bolo — confirmem o que está incluído em cada orçamento. O selo "dentro / acima do orçamento" reserva ~6 000 € do total para igreja, foto/vídeo, trajes e flores, e compara o restante com o custo do copo de água.</p>
 </section>
 
 <!-- ============ RECOMENDAÇÃO ============ -->
@@ -428,7 +445,7 @@ footer .brand{font-family:'Fraunces',serif;font-style:italic;color:var(--cobalto
   <div class="fin-grid reveal">
     <div class="fin-card"><span class="mono">Poupança atual</span><b>60 000 €</b><p>Ponto de partida, junho de 2026.</p></div>
     <div class="fin-card"><span class="mono">Capacidade mensal</span><b>2 500–3 000 €</b><p>Com 9 000 € líquidos e 1 500 € de crédito atual, é uma taxa de poupança realista (~30%).</p></div>
-    <div class="fin-card"><span class="mono">Teto do casamento</span><b>15 000 €</b><p>Copo de água ~9 000 € + igreja, foto/vídeo, trajes e flores ~6 000 €. ≈30% abaixo da média nacional para 100 convidados.</p></div>
+    <div class="fin-card"><span class="mono">Teto do casamento</span><b id="tetoOut">15 000 €</b><p>Copo de água ~<span id="espacoOut">9 000 €</span> + igreja, foto/vídeo, trajes e flores ~6 000 €. Ajusta o orçamento na secção dos locais para recalcular.</p></div>
     <div class="fin-card"><span class="mono">Disponível em set. 2027</span><b>~90–100 k€</b><p>Depois de pago o casamento — para entrada e custos da casa.</p></div>
   </div>
 
@@ -452,7 +469,7 @@ footer .brand{font-family:'Fraunces',serif;font-style:italic;color:var(--cobalto
 </section>
 
 <footer>
-  <span class="brand">P. &amp; F. · Murça, 2027</span>
+  <span class="brand">Pedro &amp; Helena · Murça, 2027</span>
   <p>Estimativas de mercado, junho de 2026 · Confirmar todos os valores com orçamentos formais dos espaços.</p>
 </footer>
 
@@ -509,9 +526,20 @@ const VENUES = [
 const fmt = n => n.toLocaleString('pt-PT') + ' €';
 const cardsEl = document.getElementById('cards');
 
-function render(guests){
+/* extras fixos reservados no orçamento total (igreja, foto/vídeo, trajes, flores) */
+const EXTRAS = 6000;
+
+function fitStatus(tMin, tMax, venueBudget){
+  if(tMax <= venueBudget) return {cls:'fit-ok', label:'Dentro do orçamento'};
+  if(tMin <= venueBudget) return {cls:'fit-tight', label:'No limite do orçamento'};
+  return {cls:'fit-over', label:'Acima do orçamento'};
+}
+
+function render(guests, budget){
+  const venueBudget = budget - EXTRAS;
   cardsEl.innerHTML = VENUES.map(v => {
     const tMin = v.min * guests, tMax = v.max * guests;
+    const fit = fitStatus(tMin, tMax, venueBudget);
     return `
     <article class="card reveal in ${v.reco ? 'highlight':''}" data-tier="${v.tier}" data-v="${v.id}" data-n="${v.n}">
       <span class="tier ${v.cls}">${v.tierLabel}</span>
@@ -523,16 +551,37 @@ function render(guests){
         <div><b>${v.min}–${v.max} €</b><span>por pessoa*</span></div>
         <div class="total"><b>${fmt(tMin)}–${fmt(tMax)}</b><span>${guests} convidados</span></div>
       </div>
+      <span class="fit ${fit.cls}">${fit.label}</span>
       <div class="links">${v.links.map(l=>`<a href="${l.u}" target="_blank" rel="noopener">${l.t} ↗</a>`).join('')}</div>
     </article>`;
   }).join('');
   applyFilter(currentFilter);
 }
 
-/* slider */
+/* sliders */
 const slider = document.getElementById('guests');
 const out = document.getElementById('guestsOut');
-slider.addEventListener('input', () => { out.textContent = slider.value; render(+slider.value); });
+const budgetSlider = document.getElementById('budget');
+const budgetOut = document.getElementById('budgetOut');
+const tetoOut = document.getElementById('tetoOut');
+const tetoHero = document.getElementById('tetoHero');
+const espacoOut = document.getElementById('espacoOut');
+
+function syncBudgetUI(budget){
+  budgetOut.textContent = fmt(budget);
+  if(tetoOut) tetoOut.textContent = fmt(budget);
+  if(tetoHero) tetoHero.textContent = '≤ ' + fmt(budget);
+  if(espacoOut) espacoOut.textContent = fmt(Math.max(0, budget - EXTRAS));
+}
+
+slider.addEventListener('input', () => {
+  out.textContent = slider.value;
+  render(+slider.value, +budgetSlider.value);
+});
+budgetSlider.addEventListener('input', () => {
+  syncBudgetUI(+budgetSlider.value);
+  render(+slider.value, +budgetSlider.value);
+});
 
 /* filtros */
 let currentFilter = 'all';
@@ -581,7 +630,8 @@ const io = new IntersectionObserver(es=>{
 },{threshold:.18});
 document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
-render(100);
+syncBudgetUI(+budgetSlider.value);
+render(+slider.value, +budgetSlider.value);
 </script>
 </body>
 </html>

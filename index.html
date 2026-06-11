@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Murça 2027 — O Nosso Casamento</title>
+<meta name="description" content="O copo de água a 30 km de Murça: 6 locais, orçamentos e a nossa recomendação.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Figtree:wght@300..700&family=Spline+Sans+Mono:wght@300..600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --fundo:#fcfdfe;          /* branco quente */
+  --painel:#ffffff;
+  --neve:#f1f6fb;           /* azul gelo para secções alternadas */
+  --cobalto:#1d4e89;        /* azul azulejo */
+  --cobalto-esc:#11335e;
+  --celeste:#5e8fc7;
+  --tinta:#1c2733;          /* texto principal */
+  --tinta-dim:#5b6b7d;      /* texto secundário */
+  --ouro:#b98a1d;           /* acento discreto p/ recomendação */
+  --linha:#dbe5ef;
+  --raio:18px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--fundo);
+  color:var(--tinta);
+  font-family:'Figtree',sans-serif;
+  font-weight:380;
+  line-height:1.6;
+  overflow-x:hidden;
+}
+::selection{background:var(--cobalto);color:#fff}
+h1,h2,h3{font-family:'Fraunces',serif;font-weight:430;letter-spacing:-.01em}
+.mono{font-family:'Spline Sans Mono',monospace;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase}
+a{color:var(--cobalto)}
+button{font-family:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--cobalto);outline-offset:3px;border-radius:4px}
+
+/* ---------- CAPA / APRESENTAÇÃO ---------- */
+.capa{
+  min-height:100svh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;position:relative;padding:2rem 6vw;
+  background:
+    radial-gradient(ellipse 70% 55% at 50% -10%, #e4eef9, transparent 70%),
+    var(--fundo);
+}
+.azulejo-band{
+  position:absolute;left:0;right:0;height:26px;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='26' viewBox='0 0 26 26'%3E%3Crect width='26' height='26' fill='none'/%3E%3Cpath d='M13 2 L20 13 L13 24 L6 13 Z' fill='none' stroke='%231d4e89' stroke-width='1.1' opacity='.55'/%3E%3Ccircle cx='13' cy='13' r='2.2' fill='%231d4e89' opacity='.45'/%3E%3Cpath d='M0 13 L4 13 M22 13 L26 13' stroke='%235e8fc7' stroke-width='1' opacity='.5'/%3E%3C/svg%3E");
+  background-repeat:repeat-x;
+}
+.azulejo-band.top{top:0}
+.azulejo-band.bottom{bottom:0}
+.capa .monograma{
+  width:96px;height:96px;border:1.5px solid var(--cobalto);
+  transform:rotate(45deg);display:flex;align-items:center;justify-content:center;
+  margin-bottom:2.4rem;position:relative;
+}
+.capa .monograma::after{
+  content:"";position:absolute;inset:7px;border:1px solid var(--celeste);opacity:.6;
+}
+.capa .monograma span{
+  transform:rotate(-45deg);
+  font-family:'Fraunces',serif;font-style:italic;font-size:1.7rem;color:var(--cobalto);
+}
+.capa .eyebrow{color:var(--celeste);margin-bottom:1.2rem}
+.capa h1{
+  font-size:clamp(2.8rem, 7.5vw, 6rem);
+  line-height:1.04;color:var(--cobalto-esc);font-weight:380;
+}
+.capa h1 em{font-style:italic;color:var(--cobalto);font-weight:330}
+.capa .sub{
+  margin-top:1.6rem;color:var(--tinta-dim);font-size:1.06rem;max-width:36rem;
+}
+.capa .data-pill{
+  margin-top:2.4rem;display:inline-flex;align-items:center;gap:1rem;
+  border:1px solid var(--linha);border-radius:99px;background:#fff;
+  padding:.7rem 1.6rem;font-size:.9rem;color:var(--tinta-dim);
+  box-shadow:0 10px 30px -18px rgba(29,78,137,.35);
+}
+.capa .data-pill b{color:var(--cobalto);font-weight:600}
+.capa .scroll-cue{
+  position:absolute;bottom:3.2rem;left:50%;transform:translateX(-50%);
+  color:var(--celeste);text-decoration:none;font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;
+  display:flex;flex-direction:column;align-items:center;gap:.5rem;
+}
+.scroll-cue::after{
+  content:"";width:1px;height:2.4rem;background:linear-gradient(var(--celeste),transparent);
+  animation:drip 1.8s ease-in-out infinite;
+}
+@keyframes drip{0%,100%{opacity:.3}50%{opacity:1}}
+
+/* ---------- NAV ---------- */
+nav{
+  position:sticky;top:0;z-index:50;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:.9rem 5vw;
+  background:rgba(252,253,254,.88);backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--linha);
+}
+nav .brand{font-family:'Fraunces',serif;font-size:1rem;font-style:italic;color:var(--cobalto)}
+nav .links{display:flex;gap:1.6rem}
+nav .links a{color:var(--tinta-dim);text-decoration:none;font-size:.84rem;transition:color .2s}
+nav .links a:hover{color:var(--cobalto)}
+@media(max-width:680px){nav .links{gap:1rem;font-size:.78rem}}
+
+/* ---------- HERO MAPA ---------- */
+.hero{
+  display:grid;grid-template-columns:1.05fr .95fr;align-items:center;gap:3rem;
+  padding:5rem 5vw;
+}
+.hero .eyebrow{color:var(--cobalto);margin-bottom:1.2rem;display:flex;align-items:center;gap:.8rem}
+.hero .eyebrow::before{content:"";width:2.4rem;height:1px;background:var(--cobalto)}
+.hero h2{font-size:clamp(2rem,4.6vw,3.6rem);line-height:1.05;color:var(--cobalto-esc)}
+.hero h2 em{font-style:italic;color:var(--cobalto)}
+.hero p.lead{margin-top:1.4rem;max-width:34rem;color:var(--tinta-dim);font-size:1.02rem}
+.hero .meta{display:flex;gap:2.4rem;margin-top:2.4rem;flex-wrap:wrap}
+.hero .meta div b{display:block;font-family:'Fraunces',serif;font-size:1.5rem;color:var(--cobalto);font-weight:480}
+.hero .meta div span{font-size:.76rem;color:var(--tinta-dim);letter-spacing:.08em;text-transform:uppercase}
+
+.radial-wrap{display:flex;justify-content:center}
+.radial-wrap svg{width:min(440px,92%);height:auto;overflow:visible}
+.ring{fill:none;stroke:var(--linha);stroke-width:1}
+.ring-label{fill:var(--tinta-dim);font-family:'Spline Sans Mono',monospace;font-size:9px;letter-spacing:.1em}
+.venue-dot{cursor:pointer}
+.venue-dot circle.core{fill:var(--cobalto);transition:fill .2s}
+.venue-dot circle.halo{fill:var(--cobalto);opacity:.12}
+.venue-dot text{fill:var(--tinta);font-family:'Figtree',sans-serif;font-size:10.5px}
+.venue-dot:hover circle.core{fill:var(--ouro)}
+.center-mark text{fill:var(--cobalto-esc);font-family:'Fraunces',serif;font-style:italic;font-size:13px}
+.boar{fill:var(--cobalto);opacity:.85}
+@media(max-width:900px){
+  .hero{grid-template-columns:1fr;padding-top:3.5rem}
+  .radial-wrap svg{width:min(340px,88%)}
+}
+
+/* ---------- SECÇÕES ---------- */
+section{padding:5rem 5vw;position:relative}
+.alt-bg{background:var(--neve)}
+.section-head{max-width:48rem;margin-bottom:2.8rem}
+.section-head .mono{color:var(--cobalto);margin-bottom:.9rem;display:block}
+.section-head h2{font-size:clamp(1.9rem,3.6vw,2.8rem);color:var(--cobalto-esc)}
+.section-head p{margin-top:1rem;color:var(--tinta-dim)}
+
+/* calculadora */
+.calc{
+  background:var(--painel);border:1px solid var(--linha);border-radius:var(--raio);
+  padding:1.5rem 2rem;display:flex;align-items:center;gap:2rem;flex-wrap:wrap;
+  margin-bottom:2.4rem;box-shadow:0 14px 36px -26px rgba(29,78,137,.3);
+}
+.calc label{font-size:.8rem;color:var(--tinta-dim);letter-spacing:.06em;text-transform:uppercase}
+.calc .guests{font-family:'Fraunces',serif;font-size:2.2rem;color:var(--cobalto);min-width:3.2ch;font-weight:500}
+.calc input[type=range]{
+  flex:1;min-width:180px;appearance:none;height:4px;border-radius:2px;
+  background:linear-gradient(to right, var(--celeste), var(--cobalto));
+}
+.calc input[type=range]::-webkit-slider-thumb{
+  appearance:none;width:20px;height:20px;border-radius:50%;
+  background:#fff;border:3px solid var(--cobalto);cursor:grab;
+}
+.calc input[type=range]::-moz-range-thumb{
+  width:18px;height:18px;border-radius:50%;background:#fff;border:3px solid var(--cobalto);cursor:grab;
+}
+.filtros{display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:2rem}
+.chip{
+  border:1px solid var(--linha);background:#fff;color:var(--tinta-dim);
+  padding:.45rem 1.1rem;border-radius:99px;font-size:.82rem;transition:all .2s;
+}
+.chip:hover{border-color:var(--cobalto);color:var(--cobalto)}
+.chip.on{background:var(--cobalto);border-color:var(--cobalto);color:#fff}
+
+/* cards */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:1.4rem}
+.card{
+  background:var(--painel);border:1px solid var(--linha);border-radius:var(--raio);
+  padding:1.8rem;display:flex;flex-direction:column;gap:1rem;
+  transition:transform .3s, border-color .3s, box-shadow .3s;
+  position:relative;overflow:hidden;
+}
+.card::after{
+  content:attr(data-n);
+  position:absolute;right:1.1rem;top:.4rem;
+  font-family:'Fraunces',serif;font-style:italic;font-size:3.4rem;
+  color:rgba(29,78,137,.07);pointer-events:none;
+}
+.card:hover{transform:translateY(-4px);border-color:var(--celeste);box-shadow:0 20px 44px -28px rgba(29,78,137,.4)}
+.card.highlight{border-color:var(--ouro);box-shadow:0 0 0 1px var(--ouro), 0 20px 50px -26px rgba(185,138,29,.45)}
+.card.hidden{display:none}
+.card .tier{
+  align-self:flex-start;padding:.28rem .8rem;border-radius:99px;
+  font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;font-weight:600;
+}
+.t-eco{background:#e7f3ec;color:#1f7a4d}
+.t-med{background:#e6eefb;color:var(--cobalto)}
+.t-alt{background:#fdf2e2;color:#9a6b10}
+.t-pre{background:#10335e;color:#dce9fa}
+.card h3{font-size:1.42rem;color:var(--cobalto-esc);font-weight:480}
+.card .loc{font-size:.82rem;color:var(--tinta-dim);display:flex;gap:.5rem;align-items:center}
+.card .loc::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--cobalto)}
+.card p.desc{font-size:.92rem;color:var(--tinta-dim);flex:1}
+.card .nums{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;border-top:1px solid var(--linha);padding-top:1rem}
+.card .nums b{font-family:'Spline Sans Mono',monospace;font-size:1.04rem;color:var(--tinta);font-weight:500;display:block}
+.card .nums span{font-size:.68rem;color:var(--tinta-dim);text-transform:uppercase;letter-spacing:.08em}
+.card .total b{color:var(--cobalto)}
+.card ul{list-style:none;display:flex;flex-wrap:wrap;gap:.45rem}
+.card ul li{font-size:.74rem;color:var(--tinta-dim);border:1px solid var(--linha);border-radius:6px;padding:.2rem .6rem;background:#fff}
+.card .links{display:flex;flex-wrap:wrap;gap:.5rem;border-top:1px solid var(--linha);padding-top:1rem}
+.card .links a{
+  font-size:.76rem;color:var(--cobalto);text-decoration:none;
+  border:1px solid var(--celeste);border-radius:99px;padding:.32rem .85rem;transition:all .2s;
+}
+.card .links a:hover{background:var(--cobalto);border-color:var(--cobalto);color:#fff}
+.estim-note{margin-top:2rem;font-size:.8rem;color:var(--tinta-dim);max-width:46rem;font-style:italic}
+
+/* ---------- RECOMENDAÇÃO ---------- */
+.reco{background:linear-gradient(160deg, var(--cobalto-esc), var(--cobalto));color:#e9f1fa}
+.reco .mono{color:#9dc1ea}
+.reco-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:3.5rem;align-items:start}
+@media(max-width:900px){.reco-grid{grid-template-columns:1fr}}
+.reco h2{font-size:clamp(1.9rem,3.4vw,2.7rem);color:#fff}
+.reco h2 em{font-style:italic;color:#ffd98a}
+.reco .why{margin-top:1.6rem;display:flex;flex-direction:column;gap:1.1rem}
+.reco .why div{display:flex;gap:1rem;align-items:flex-start}
+.reco .why .ico{
+  flex:0 0 2.2rem;height:2.2rem;border-radius:50%;
+  border:1px solid #ffd98a;color:#ffd98a;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Fraunces',serif;font-style:italic;font-size:1rem;
+}
+.reco .why p{font-size:.93rem;color:#c4d8ee}
+.reco .why p b{color:#fff;font-weight:550}
+.date-card{
+  background:#fff;border-radius:var(--raio);padding:2.2rem;text-align:center;color:var(--tinta);
+  box-shadow:0 30px 70px -30px rgba(0,0,0,.45);
+}
+.date-card .mono{color:var(--cobalto)}
+.date-card .big{
+  font-family:'Fraunces',serif;font-size:clamp(2.6rem,5vw,3.8rem);
+  color:var(--cobalto-esc);line-height:1.05;margin:.8rem 0;font-weight:380;
+}
+.date-card .big em{font-style:italic;color:var(--cobalto)}
+.date-card p{font-size:.88rem;color:var(--tinta-dim)}
+.date-card .alt{margin-top:1.4rem;padding-top:1.2rem;border-top:1px dashed var(--linha);font-size:.82rem;color:var(--tinta-dim)}
+.date-card .alt b{color:var(--cobalto)}
+
+/* ---------- FINANÇAS ---------- */
+.fin-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.4rem;margin-bottom:2.4rem}
+.fin-card{background:#fff;border:1px solid var(--linha);border-radius:var(--raio);padding:1.6rem}
+.fin-card .mono{color:var(--celeste);display:block;margin-bottom:.6rem}
+.fin-card b{font-family:'Fraunces',serif;font-size:1.9rem;color:var(--cobalto-esc);font-weight:450}
+.fin-card p{font-size:.84rem;color:var(--tinta-dim);margin-top:.5rem}
+.barra{background:#fff;border:1px solid var(--linha);border-radius:var(--raio);padding:2rem}
+.barra h3{color:var(--cobalto-esc);font-size:1.2rem;margin-bottom:1.4rem;font-weight:480}
+.track{height:30px;border-radius:8px;overflow:hidden;display:flex;background:var(--neve)}
+.seg{height:100%;transition:width .6s ease}
+.seg.poupanca{background:var(--cobalto)}
+.seg.acumulado{background:var(--celeste)}
+.seg.casamento{background:var(--ouro)}
+.legenda{display:flex;gap:1.6rem;flex-wrap:wrap;margin-top:1rem;font-size:.8rem;color:var(--tinta-dim)}
+.legenda span{display:flex;align-items:center;gap:.5rem}
+.legenda i{width:11px;height:11px;border-radius:3px;display:inline-block}
+.aviso{
+  margin-top:2.2rem;border-left:3px solid var(--cobalto);
+  background:#fff;border:1px solid var(--linha);border-left:3px solid var(--cobalto);
+  border-radius:0 12px 12px 0;padding:1.2rem 1.5rem;font-size:.88rem;color:var(--tinta-dim);max-width:52rem;
+}
+.aviso b{color:var(--cobalto)}
+
+footer{
+  padding:3rem 5vw;border-top:1px solid var(--linha);
+  display:flex;justify-content:space-between;align-items:center;gap:1.5rem;flex-wrap:wrap;
+  background:var(--neve);
+}
+footer p{font-size:.78rem;color:var(--tinta-dim)}
+footer .brand{font-family:'Fraunces',serif;font-style:italic;color:var(--cobalto)}
+
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease, transform .7s ease}
+.reveal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion: reduce){
+  *{transition:none!important;animation:none!important}
+  .reveal{opacity:1;transform:none}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ PÁGINA DE APRESENTAÇÃO ============ -->
+<header class="capa" id="apresentacao">
+  <div class="azulejo-band top" aria-hidden="true"></div>
+  <div class="monograma"><span>P·F</span></div>
+  <span class="eyebrow mono">Vamos casar · Murça, Trás-os-Montes</span>
+  <h1>O nosso <em>sim</em>,<br>na terra do vinho e do azeite.</h1>
+  <p class="sub">Cerimónia religiosa em Murça e copo de água algures num raio de 30 km — este é o nosso guia de locais, orçamentos e datas para 2027.</p>
+  <div class="data-pill">
+    <span>Data prevista</span><b>Setembro de 2027</b><span>·</span><span>100 convidados</span>
+  </div>
+  <a class="scroll-cue" href="#locais">Descobrir os locais</a>
+  <div class="azulejo-band bottom" aria-hidden="true"></div>
+</header>
+
+<nav>
+  <span class="brand">Murça · 2027</span>
+  <div class="links">
+    <a href="#locais">Locais</a>
+    <a href="#recomendacao">Recomendação</a>
+    <a href="#financas">Plano</a>
+  </div>
+</nav>
+
+<!-- ============ HERO MAPA ============ -->
+<section class="hero" id="mapa">
+  <div>
+    <span class="eyebrow mono">O território</span>
+    <h2>Seis locais a <em>30 km</em><br>da Porca de Murça.</h2>
+    <p class="lead">Seis espaços reais, seis orçamentos, um critério: festa simples, comida de qualidade, 100 convidados — sem comprometer a casa no Luxemburgo.</p>
+    <div class="meta">
+      <div><b>100</b><span>convidados</span></div>
+      <div><b>6</b><span>locais avaliados</span></div>
+      <div><b>≤ 15 000 €</b><span>teto do casamento</span></div>
+    </div>
+  </div>
+
+  <div class="radial-wrap">
+    <svg viewBox="0 0 440 440" role="img" aria-label="Mapa radial dos 6 locais à volta de Murça">
+      <circle class="ring" cx="220" cy="220" r="60"/>
+      <circle class="ring" cx="220" cy="220" r="120"/>
+      <circle class="ring" cx="220" cy="220" r="180"/>
+      <text class="ring-label" x="226" y="158">10 km</text>
+      <text class="ring-label" x="226" y="98">20 km</text>
+      <text class="ring-label" x="226" y="38">30 km</text>
+
+      <g class="center-mark">
+        <g class="boar" transform="translate(220,214) scale(0.85)">
+          <path d="M-16,4 Q-18,-4 -10,-7 Q-6,-12 2,-11 Q10,-12 14,-7 Q20,-6 19,0 L22,-2 Q24,1 20,3 Q18,7 12,8 L12,12 L9,12 L9,8 L0,8 L0,12 L-3,12 L-3,8 Q-12,9 -16,4 Z"/>
+        </g>
+        <text x="220" y="248" text-anchor="middle">Murça</text>
+      </g>
+
+      <g class="venue-dot" data-v="borges" tabindex="0" transform="translate(196,196)">
+        <circle class="halo" r="14"/><circle class="core" r="5.5"/>
+        <text x="-10" y="-12" text-anchor="end">R. Borges</text>
+      </g>
+      <g class="venue-dot" data-v="caves" tabindex="0" transform="translate(238,236)">
+        <circle class="halo" r="14"/><circle class="core" r="5.5"/>
+        <text x="12" y="16">Caves de Murça</text>
+      </g>
+      <g class="venue-dot" data-v="falgueira" tabindex="0" transform="translate(232,192)">
+        <circle class="halo" r="14"/><circle class="core" r="5.5"/>
+        <text x="12" y="-6">Q. da Falgueira</text>
+      </g>
+      <g class="venue-dot" data-v="forrester" tabindex="0" transform="translate(208,310)">
+        <circle class="halo" r="14"/><circle class="core" r="5.5"/>
+        <text x="0" y="26" text-anchor="middle">Forrester · Alijó</text>
+      </g>
+      <g class="venue-dot" data-v="valle" tabindex="0" transform="translate(316,118)">
+        <circle class="halo" r="14"/><circle class="core" r="5.5"/>
+        <text x="0" y="-14" text-anchor="middle">Q. Valle de Passos ★</text>
+      </g>
+      <g class="venue-dot" data-v="ponte" tabindex="0" transform="translate(394,178)">
+        <circle class="halo" r="14"/><circle class="core" r="5.5"/>
+        <text x="0" y="-14" text-anchor="middle">Q. da Ponte</text>
+      </g>
+    </svg>
+  </div>
+</section>
+
+<!-- ============ LOCAIS ============ -->
+<section id="locais" class="alt-bg">
+  <div class="section-head reveal">
+    <span class="mono">01 — Os locais</span>
+    <h2>Seis espaços, seis carteiras.</h2>
+    <p>Arrasta o número de convidados e o orçamento de cada local recalcula-se ao vivo. Os valores por pessoa são estimativas do mercado transmontano — pede sempre orçamento formal.</p>
+  </div>
+
+  <div class="calc reveal">
+    <label for="guests">Convidados</label>
+    <span class="guests" id="guestsOut">100</span>
+    <input type="range" id="guests" min="70" max="140" value="100" step="5" aria-label="Número de convidados">
+  </div>
+
+  <div class="filtros reveal" role="group" aria-label="Filtrar por orçamento">
+    <button class="chip on" data-f="all">Todos</button>
+    <button class="chip" data-f="eco">Económico</button>
+    <button class="chip" data-f="med">Médio</button>
+    <button class="chip" data-f="alt">Médio-alto</button>
+    <button class="chip" data-f="pre">Premium</button>
+  </div>
+
+  <div class="grid" id="cards"></div>
+
+  <p class="estim-note reveal">* Estimativas por pessoa baseadas em médias regionais (a média nacional em quintas ronda os 76 €/pessoa; Trás-os-Montes tende a ficar abaixo). Menus incluem habitualmente cocktail, jantar, bebidas e bolo — confirmem o que está incluído em cada orçamento.</p>
+</section>
+
+<!-- ============ RECOMENDAÇÃO ============ -->
+<section id="recomendacao" class="reco">
+  <div class="reco-grid">
+    <div class="reveal">
+      <span class="mono">02 — A escolha</span>
+      <h2 style="margin-top:.8rem">Quinta <em>Valle de Passos</em>,<br>sábado de setembro.</h2>
+      <div class="why">
+        <div><span class="ico">€</span><p><b>Melhor rácio qualidade/preço.</b> Estimativa de 7 a 9 mil € para 100 pessoas — folga de sobra dentro do teto de 15 000 € para o casamento inteiro.</p></div>
+        <div><span class="ico">⌂</span><p><b>Espaço sem stress.</b> Dois salões com capacidade para 300, jardins com piscina e cascata: 100 convidados cabem com conforto, chova ou faça sol.</p></div>
+        <div><span class="ico">✝</span><p><b>Logística com a igreja.</b> A ~25 minutos de Murça — cerimónia na vila, festa na quinta, sem viagens longas para os convidados.</p></div>
+        <div><span class="ico">↗</span><p><b>Bónus descoberto na pesquisa:</b> a Valle de Passos é a antiga Quinta Dona Adelaide — e tem o Olive Nature Hotel &amp; Spa 4★ dentro do recinto. Os convidados do Luxemburgo dormem no local. <b>Plano B de poupança:</b> Caves de Murça, tudo na vila.</p></div>
+      </div>
+    </div>
+    <div class="date-card reveal">
+      <span class="mono">Data recomendada</span>
+      <div class="big">18 de<br><em>setembro</em><br>2027</div>
+      <p>Sábado. Tempo ainda quente na Terra Quente, fora do pico de agosto (preços máximos e agendas cheias com os emigrantes) — e deixa a primavera livre para fechar a compra da casa.</p>
+      <div class="alt">Alternativa: <b>sexta, 17 set 2027</b> — muitas quintas dão 10–20% de desconto fora do sábado. Reservem com 12–14 meses de antecedência (verão/outono 2026).</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FINANÇAS ============ -->
+<section id="financas">
+  <div class="section-head reveal">
+    <span class="mono">03 — O plano financeiro</span>
+    <h2>Casar em Murça sem perder a casa no Luxemburgo.</h2>
+    <p>O casamento é um evento; a casa é uma década de prestações. O orçamento foi desenhado por esta ordem.</p>
+  </div>
+
+  <div class="fin-grid reveal">
+    <div class="fin-card"><span class="mono">Poupança atual</span><b>60 000 €</b><p>Ponto de partida, junho de 2026.</p></div>
+    <div class="fin-card"><span class="mono">Capacidade mensal</span><b>2 500–3 000 €</b><p>Com 9 000 € líquidos e 1 500 € de crédito atual, é uma taxa de poupança realista (~30%).</p></div>
+    <div class="fin-card"><span class="mono">Teto do casamento</span><b>15 000 €</b><p>Copo de água ~9 000 € + igreja, foto/vídeo, trajes e flores ~6 000 €. ≈30% abaixo da média nacional para 100 convidados.</p></div>
+    <div class="fin-card"><span class="mono">Disponível em set. 2027</span><b>~90–100 k€</b><p>Depois de pago o casamento — para entrada e custos da casa.</p></div>
+  </div>
+
+  <div class="barra reveal">
+    <h3>Para onde vai o dinheiro até setembro de 2027</h3>
+    <div class="track" aria-hidden="true">
+      <div class="seg poupanca" style="width:0%" data-w="55%"></div>
+      <div class="seg acumulado" style="width:0%" data-w="31%"></div>
+      <div class="seg casamento" style="width:0%" data-w="14%"></div>
+    </div>
+    <div class="legenda">
+      <span><i style="background:var(--cobalto)"></i>Poupança atual · 60 k€</span>
+      <span><i style="background:var(--celeste)"></i>Poupança nova (15 meses) · ~34 k€</span>
+      <span><i style="background:var(--ouro)"></i>Casamento · 15 k€</span>
+    </div>
+  </div>
+
+  <div class="aviso reveal">
+    <b>Nota honesta sobre os 700–850 k€:</b> com 90% de financiamento a ~3,3%, uma casa de 750 k€ custa ~2 900 €/mês. Somando os 1 500 € do crédito atual, a taxa de esforço passa de 45% — acima do que os bancos luxemburgueses normalmente aceitam. As opções: vender a casa atual (libertando capital próprio), apontar para o limite inferior (~700 k€), ou negociar prazo mais longo. Verifiquem também o <b>Bëllegen Akt</b> (até 40 000 € de crédito fiscal por pessoa nos custos de registo, para residência principal). Isto não substitui aconselhamento bancário formal.
+  </div>
+</section>
+
+<footer>
+  <span class="brand">P. &amp; F. · Murça, 2027</span>
+  <p>Estimativas de mercado, junho de 2026 · Confirmar todos os valores com orçamentos formais dos espaços.</p>
+</footer>
+
+<script>
+const VENUES = [
+  {id:'borges', n:'01', nome:'Residencial Borges', loc:'Murça · centro · 0 km',
+   tier:'eco', tierLabel:'Económico', cls:'t-eco', min:45, max:60,
+   desc:'Restaurante de referência no centro da vila, cozinha tipicamente transmontana. A opção mais direta: comida de qualidade sem pagar o "prémio de quinta", a dois passos da igreja.',
+   tags:['Cozinha regional','Centro da vila','Sem custo de espaço extra','Festa intimista'],
+   links:[
+     {t:'Ver espaços em Vila Real · casamentos.pt', u:'https://www.casamentos.pt/espacos-casamentos/vila-real'}
+   ]},
+  {id:'caves', n:'02', nome:'Caves de Murça', loc:'Murça · ~2 km',
+   tier:'med', tierLabel:'Médio', cls:'t-med', min:60, max:75,
+   desc:'Quinta com alma de adega na terra do vinho e do azeite. Carácter genuíno, vinhos da casa à mesa e logística perfeita: cerimónia e festa praticamente no mesmo sítio.',
+   tags:['Ambiente de adega','Vinhos locais','5 min da igreja','Carácter rústico'],
+   links:[
+     {t:'Perfil · Zankyou (quintas Vila Real)', u:'https://www.zankyou.pt/locais-festa-quintas/vila-real'}
+   ]},
+  {id:'ponte', n:'03', nome:'Quinta da Ponte', loc:'Carvalhais, Mirandela · ~30 km',
+   tier:'med', tierLabel:'Médio', cls:'t-med', min:65, max:80,
+   desc:'A 5 km de Mirandela, em plena Terra Quente, longe da pressa citadina. Uma quinta "cheia de espaços", de produção própria — fruta, hortas, ar de campo — onde a comida é levada a sério.',
+   tags:['Produção própria','Ambiente de campo','Terra Quente','Espaços exteriores'],
+   links:[
+     {t:'Perfil · casamentos.pt', u:'https://www.casamentos.pt/quintas-para-casamentos/quinta-da-ponte--e150342'},
+     {t:'Facebook', u:'https://pt-pt.facebook.com/quintadapontemdl/'}
+   ]},
+  {id:'valle', n:'04', nome:'Quinta Valle de Passos', loc:'Valpaços · ~27 km · ex-Quinta Dona Adelaide',
+   tier:'med', tierLabel:'Médio ★ Recomendado', cls:'t-med', min:70, max:90, reco:true,
+   desc:'Quase uma década de experiência (sob o antigo nome Quinta Dona Adelaide). Jardins impecáveis com piscina e cascata, dois salões com luz natural para 300 pax — e o Olive Nature Hotel & Spa 4★ dentro do recinto: os convidados que vêm do Luxemburgo dormem no próprio espaço.',
+   tags:['2 salões · 300 pax','Hotel & Spa 4★ no recinto','Jardins + piscina','Equipa experiente'],
+   links:[
+     {t:'Site oficial · Grupo Pacheca', u:'https://pacheca.com/pages/quintavalledepassos'},
+     {t:'Perfil · casamentos.pt', u:'https://www.casamentos.pt/quintas-para-casamentos/quinta-valle-de-passos--e104425'}
+   ]},
+  {id:'falgueira', n:'05', nome:'Quinta da Falgueira', loc:'Murça · coração da vila',
+   tier:'alt', tierLabel:'Médio-alto', cls:'t-alt', min:75, max:90,
+   desc:'Espaço requintado no coração de Murça, salão para 300 pessoas e terraço com vista sobre o parque urbano da vila. A logística mais simples de todas: igreja, fotos e festa sem ninguém entrar no carro. Avaliação 4,9/5.',
+   tags:['Requinte','Zero deslocações','Salão até 300 pax','Terraço com vista'],
+   links:[
+     {t:'Perfil · casamentos.pt', u:'https://www.casamentos.pt/quintas-para-casamentos/quinta-da-falgueira--e163431'},
+     {t:'Instagram', u:'https://www.instagram.com/quintadafalgueira/'},
+     {t:'☎ +351 926 923 208', u:'tel:+351926923208'}
+   ]},
+  {id:'forrester', n:'06', nome:'Forrester Essence Douro Hotel', loc:'Alijó · ~15 km',
+   tier:'pre', tierLabel:'Premium', cls:'t-pre', min:100, max:125,
+   desc:'Hotel boutique 4★ num palacete no coração de Alijó, em plena Região Demarcada do Douro. Charme clássico, conforto contemporâneo e o Douro como cenário das fotografias.',
+   tags:['Boutique 4★','Palacete histórico','Douro vinhateiro','Alojamento no local'],
+   links:[
+     {t:'Ver quintas em Vila Real · casamentos.pt', u:'https://www.casamentos.pt/quintas-para-casamentos/vila-real'}
+   ]},
+];
+
+const fmt = n => n.toLocaleString('pt-PT') + ' €';
+const cardsEl = document.getElementById('cards');
+
+function render(guests){
+  cardsEl.innerHTML = VENUES.map(v => {
+    const tMin = v.min * guests, tMax = v.max * guests;
+    return `
+    <article class="card reveal in ${v.reco ? 'highlight':''}" data-tier="${v.tier}" data-v="${v.id}" data-n="${v.n}">
+      <span class="tier ${v.cls}">${v.tierLabel}</span>
+      <h3>${v.nome}</h3>
+      <span class="loc">${v.loc}</span>
+      <p class="desc">${v.desc}</p>
+      <ul>${v.tags.map(t=>`<li>${t}</li>`).join('')}</ul>
+      <div class="nums">
+        <div><b>${v.min}–${v.max} €</b><span>por pessoa*</span></div>
+        <div class="total"><b>${fmt(tMin)}–${fmt(tMax)}</b><span>${guests} convidados</span></div>
+      </div>
+      <div class="links">${v.links.map(l=>`<a href="${l.u}" target="_blank" rel="noopener">${l.t} ↗</a>`).join('')}</div>
+    </article>`;
+  }).join('');
+  applyFilter(currentFilter);
+}
+
+/* slider */
+const slider = document.getElementById('guests');
+const out = document.getElementById('guestsOut');
+slider.addEventListener('input', () => { out.textContent = slider.value; render(+slider.value); });
+
+/* filtros */
+let currentFilter = 'all';
+function applyFilter(f){
+  currentFilter = f;
+  document.querySelectorAll('.card').forEach(c=>{
+    const t = c.dataset.tier;
+    const show = f==='all' || t===f;
+    c.classList.toggle('hidden', !show);
+  });
+}
+document.querySelectorAll('.chip').forEach(ch=>{
+  ch.addEventListener('click', ()=>{
+    document.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));
+    ch.classList.add('on');
+    applyFilter(ch.dataset.f);
+  });
+});
+
+/* mapa → cartão */
+document.querySelectorAll('.venue-dot').forEach(d=>{
+  const go = ()=>{
+    const id = d.dataset.v;
+    applyFilter('all');
+    document.querySelectorAll('.chip').forEach(c=>c.classList.toggle('on', c.dataset.f==='all'));
+    const card = document.querySelector(`.card[data-v="${id}"]`);
+    if(card){
+      card.scrollIntoView({behavior:'smooth', block:'center'});
+      card.classList.add('highlight');
+      setTimeout(()=>{ if(!VENUES.find(v=>v.id===id).reco) card.classList.remove('highlight'); }, 2400);
+    }
+  };
+  d.addEventListener('click', go);
+  d.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){e.preventDefault();go();} });
+});
+
+/* reveal on scroll */
+const io = new IntersectionObserver(es=>{
+  es.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add('in');
+      e.target.querySelectorAll?.('.seg')?.forEach(s=>{ s.style.width = s.dataset.w; });
+      io.unobserve(e.target);
+    }
+  });
+},{threshold:.18});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+render(100);
+</script>
+</body>
+</html>

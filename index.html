@@ -400,7 +400,7 @@ footer .brand{font-family:'Fraunces',serif;font-style:italic;color:var(--cobalto
       <input type="range" id="budget" min="8000" max="25000" value="15000" step="500" aria-label="Orçamento total do casamento">
     </div>
   </div>
-  <p class="calc-nota reveal">Convidados e orçamento estão ligados (~90 €/convidado + ~6 000 € de extras): mexe num e o outro ajusta-se. Espaços acima do orçamento deixam de aparecer.</p>
+  <p class="calc-nota reveal">Ajusta convidados e orçamento de forma independente. Reservados ~6 000 € do orçamento para extras (igreja, foto/vídeo, trajes, flores); os espaços cujo copo de água ultrapassa o que sobra deixam de aparecer.</p>
 
   <div class="filtros reveal" role="group" aria-label="Filtrar por orçamento">
     <button class="chip on" data-f="all">Todos</button>
@@ -531,17 +531,12 @@ const fmt = n => n.toLocaleString('pt-PT') + ' €';
 const cardsEl = document.getElementById('cards');
 
 /* modelo de planeamento --------------------------------------------------
-   orçamento total ≈ convidados × custo por pessoa do copo de água + extras.
-   Os defaults (100 convidados ↔ 15 000 €) são coerentes com estes números. */
+   Convidados e orçamento são independentes. O orçamento total reserva uns
+   extras fixos; o restante é o teto para o copo de água, que se compara ao
+   custo estimado (convidados × € por pessoa) para decidir que locais cabem. */
 const EXTRAS = 6000;        /* igreja, foto/vídeo, trajes, flores */
-const REF_PP = 90;          /* € por convidado usado para ligar convidados↔orçamento */
 const POUP_ATUAL = 60000;   /* poupança em junho de 2026 */
 const POUP_NOVA  = 34000;   /* poupança acumulada em 15 meses */
-
-const clamp = (x,a,b) => Math.min(b, Math.max(a, x));
-const roundTo = (x,s) => Math.round(x/s)*s;
-const budgetFromGuests = g => clamp(roundTo(g*REF_PP + EXTRAS, 500), 8000, 25000);
-const guestsFromBudget = b => clamp(roundTo((b - EXTRAS)/REF_PP, 5), 70, 140);
 
 function fitStatus(tMin, tMax, venueBudget){
   if(tMax <= venueBudget) return {key:'ok', cls:'fit-ok', label:'Dentro do orçamento'};
@@ -607,20 +602,15 @@ function syncBudgetUI(budget){
   }
 }
 
-/* convidados e orçamento estão ligados: mexer num ajusta o outro */
-function setGuests(g){ slider.value = g; out.textContent = g; }
-function setBudget(b){ budgetSlider.value = b; syncBudgetUI(b); }
-
+/* convidados e orçamento são independentes; só o acesso aos locais reage a ambos */
 slider.addEventListener('input', () => {
   const g = +slider.value;
   out.textContent = g;
-  setBudget(budgetFromGuests(g));
   render(g, +budgetSlider.value);
 });
 budgetSlider.addEventListener('input', () => {
   const b = +budgetSlider.value;
   syncBudgetUI(b);
-  setGuests(guestsFromBudget(b));
   render(+slider.value, b);
 });
 

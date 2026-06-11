@@ -165,6 +165,8 @@ section{padding:5rem 5vw;position:relative}
 .calc input[type=range]::-moz-range-thumb{
   width:18px;height:18px;border-radius:50%;background:#fff;border:3px solid var(--cobalto);cursor:grab;
 }
+.calc-nota{margin:-1.4rem 0 2rem;font-size:.82rem;color:var(--tinta-dim);font-style:italic;max-width:46rem}
+.vazio{margin-top:1rem;padding:2rem;text-align:center;color:var(--tinta-dim);border:1px dashed var(--linha);border-radius:var(--raio);background:#fff}
 .filtros{display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:2rem}
 .chip{
   border:1px solid var(--linha);background:#fff;color:var(--tinta-dim);
@@ -398,6 +400,7 @@ footer .brand{font-family:'Fraunces',serif;font-style:italic;color:var(--cobalto
       <input type="range" id="budget" min="8000" max="25000" value="15000" step="500" aria-label="Orçamento total do casamento">
     </div>
   </div>
+  <p class="calc-nota reveal">Convidados e orçamento estão ligados (~90 €/convidado + ~6 000 € de extras): mexe num e o outro ajusta-se. Espaços acima do orçamento deixam de aparecer.</p>
 
   <div class="filtros reveal" role="group" aria-label="Filtrar por orçamento">
     <button class="chip on" data-f="all">Todos</button>
@@ -408,6 +411,7 @@ footer .brand{font-family:'Fraunces',serif;font-style:italic;color:var(--cobalto
   </div>
 
   <div class="grid" id="cards"></div>
+  <p class="vazio reveal in" id="vazio" hidden>Nenhum espaço dentro deste orçamento. Sobe o orçamento (ou o nº de convidados) para ver opções.</p>
 
   <p class="estim-note reveal">* Estimativas por pessoa baseadas em médias regionais (a média nacional em quintas ronda os 76 €/pessoa; Trás-os-Montes tende a ficar abaixo). Menus incluem habitualmente cocktail, jantar, bebidas e bolo — confirmem o que está incluído em cada orçamento. O selo "dentro / acima do orçamento" reserva ~6 000 € do total para igreja, foto/vídeo, trajes e flores, e compara o restante com o custo do copo de água.</p>
 </section>
@@ -446,7 +450,7 @@ footer .brand{font-family:'Fraunces',serif;font-style:italic;color:var(--cobalto
     <div class="fin-card"><span class="mono">Poupança atual</span><b>60 000 €</b><p>Ponto de partida, junho de 2026.</p></div>
     <div class="fin-card"><span class="mono">Capacidade mensal</span><b>2 500–3 000 €</b><p>Com 9 000 € líquidos e 1 500 € de crédito atual, é uma taxa de poupança realista (~30%).</p></div>
     <div class="fin-card"><span class="mono">Teto do casamento</span><b id="tetoOut">15 000 €</b><p>Copo de água ~<span id="espacoOut">9 000 €</span> + igreja, foto/vídeo, trajes e flores ~6 000 €. Ajusta o orçamento na secção dos locais para recalcular.</p></div>
-    <div class="fin-card"><span class="mono">Disponível em set. 2027</span><b>~90–100 k€</b><p>Depois de pago o casamento — para entrada e custos da casa.</p></div>
+    <div class="fin-card"><span class="mono">Disponível em set. 2027</span><b id="dispOut">~79 k€</b><p>Depois de pago o casamento — para entrada e custos da casa. Desce com orçamentos maiores.</p></div>
   </div>
 
   <div class="barra reveal">
@@ -459,7 +463,7 @@ footer .brand{font-family:'Fraunces',serif;font-style:italic;color:var(--cobalto
     <div class="legenda">
       <span><i style="background:var(--cobalto)"></i>Poupança atual · 60 k€</span>
       <span><i style="background:var(--celeste)"></i>Poupança nova (15 meses) · ~34 k€</span>
-      <span><i style="background:var(--ouro)"></i>Casamento · 15 k€</span>
+      <span><i style="background:var(--ouro)"></i>Casamento · <span id="casaLeg">15 k€</span></span>
     </div>
   </div>
 
@@ -526,13 +530,23 @@ const VENUES = [
 const fmt = n => n.toLocaleString('pt-PT') + ' €';
 const cardsEl = document.getElementById('cards');
 
-/* extras fixos reservados no orçamento total (igreja, foto/vídeo, trajes, flores) */
-const EXTRAS = 6000;
+/* modelo de planeamento --------------------------------------------------
+   orçamento total ≈ convidados × custo por pessoa do copo de água + extras.
+   Os defaults (100 convidados ↔ 15 000 €) são coerentes com estes números. */
+const EXTRAS = 6000;        /* igreja, foto/vídeo, trajes, flores */
+const REF_PP = 90;          /* € por convidado usado para ligar convidados↔orçamento */
+const POUP_ATUAL = 60000;   /* poupança em junho de 2026 */
+const POUP_NOVA  = 34000;   /* poupança acumulada em 15 meses */
+
+const clamp = (x,a,b) => Math.min(b, Math.max(a, x));
+const roundTo = (x,s) => Math.round(x/s)*s;
+const budgetFromGuests = g => clamp(roundTo(g*REF_PP + EXTRAS, 500), 8000, 25000);
+const guestsFromBudget = b => clamp(roundTo((b - EXTRAS)/REF_PP, 5), 70, 140);
 
 function fitStatus(tMin, tMax, venueBudget){
-  if(tMax <= venueBudget) return {cls:'fit-ok', label:'Dentro do orçamento'};
-  if(tMin <= venueBudget) return {cls:'fit-tight', label:'No limite do orçamento'};
-  return {cls:'fit-over', label:'Acima do orçamento'};
+  if(tMax <= venueBudget) return {key:'ok', cls:'fit-ok', label:'Dentro do orçamento'};
+  if(tMin <= venueBudget) return {key:'tight', cls:'fit-tight', label:'No limite do orçamento'};
+  return {key:'over', cls:'fit-over', label:'Acima do orçamento'};
 }
 
 function render(guests, budget){
@@ -541,7 +555,7 @@ function render(guests, budget){
     const tMin = v.min * guests, tMax = v.max * guests;
     const fit = fitStatus(tMin, tMax, venueBudget);
     return `
-    <article class="card reveal in ${v.reco ? 'highlight':''}" data-tier="${v.tier}" data-v="${v.id}" data-n="${v.n}">
+    <article class="card reveal in ${v.reco ? 'highlight':''}" data-tier="${v.tier}" data-v="${v.id}" data-n="${v.n}" data-fit="${fit.key}">
       <span class="tier ${v.cls}">${v.tierLabel}</span>
       <h3>${v.nome}</h3>
       <span class="loc">${v.loc}</span>
@@ -566,32 +580,64 @@ const budgetOut = document.getElementById('budgetOut');
 const tetoOut = document.getElementById('tetoOut');
 const tetoHero = document.getElementById('tetoHero');
 const espacoOut = document.getElementById('espacoOut');
+const dispOut = document.getElementById('dispOut');
+const casaLeg = document.getElementById('casaLeg');
+const barra = document.querySelector('.barra');
 
 function syncBudgetUI(budget){
   budgetOut.textContent = fmt(budget);
   if(tetoOut) tetoOut.textContent = fmt(budget);
   if(tetoHero) tetoHero.textContent = '≤ ' + fmt(budget);
   if(espacoOut) espacoOut.textContent = fmt(Math.max(0, budget - EXTRAS));
+
+  /* poupança disponível em set. 2027 = poupança total − casamento */
+  const disponivel = POUP_ATUAL + POUP_NOVA - budget;
+  if(dispOut) dispOut.textContent = '~' + Math.round(disponivel/1000) + ' k€';
+  if(casaLeg) casaLeg.textContent = Math.round(budget/1000) + ' k€';
+
+  /* barra: três fatias de (poupança atual + nova + casamento) */
+  const total = POUP_ATUAL + POUP_NOVA + budget;
+  const widths = {poupanca:POUP_ATUAL/total, acumulado:POUP_NOVA/total, casamento:budget/total};
+  if(barra){
+    barra.querySelectorAll('.seg').forEach(s=>{
+      const w = (widths[[...s.classList].find(c=>c in widths)] * 100).toFixed(1) + '%';
+      s.dataset.w = w;
+      if(barra.classList.contains('in')) s.style.width = w;
+    });
+  }
 }
 
+/* convidados e orçamento estão ligados: mexer num ajusta o outro */
+function setGuests(g){ slider.value = g; out.textContent = g; }
+function setBudget(b){ budgetSlider.value = b; syncBudgetUI(b); }
+
 slider.addEventListener('input', () => {
-  out.textContent = slider.value;
-  render(+slider.value, +budgetSlider.value);
+  const g = +slider.value;
+  out.textContent = g;
+  setBudget(budgetFromGuests(g));
+  render(g, +budgetSlider.value);
 });
 budgetSlider.addEventListener('input', () => {
-  syncBudgetUI(+budgetSlider.value);
-  render(+slider.value, +budgetSlider.value);
+  const b = +budgetSlider.value;
+  syncBudgetUI(b);
+  setGuests(guestsFromBudget(b));
+  render(+slider.value, b);
 });
 
 /* filtros */
 let currentFilter = 'all';
 function applyFilter(f){
   currentFilter = f;
+  let visiveis = 0;
   document.querySelectorAll('.card').forEach(c=>{
-    const t = c.dataset.tier;
-    const show = f==='all' || t===f;
+    const tierOk = f==='all' || c.dataset.tier===f;
+    const dentroOrcamento = c.dataset.fit !== 'over';
+    const show = tierOk && dentroOrcamento;
     c.classList.toggle('hidden', !show);
+    if(show) visiveis++;
   });
+  const vazio = document.getElementById('vazio');
+  if(vazio) vazio.hidden = visiveis > 0;
 }
 document.querySelectorAll('.chip').forEach(ch=>{
   ch.addEventListener('click', ()=>{
